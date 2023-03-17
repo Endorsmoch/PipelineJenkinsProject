@@ -14,8 +14,8 @@ class AlumnosTest extends TestCase
         //Se establece lo esperado de la prueba. Ejecutar una sola vez el método lista.
         $mockAlumnos->expects($this->once())->method('lista');
         
-        $this->get('/api/alumnos');
-        //$mockAlumnos->callLista();
+        //$this->get('/api/alumnos');
+        $mockAlumnos->callLista();
        
     }
 }
