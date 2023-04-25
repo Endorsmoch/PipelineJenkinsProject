@@ -9,12 +9,6 @@ pipeline {
             }
         }
         
-        stage('Compilar proyecto') {
-            steps {
-                bat 'php artisan build'
-            }
-        }
-        
         stage('Ejecutar test cases') {
             steps {
                 bat 'php artisan test'
