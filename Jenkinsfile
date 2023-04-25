@@ -8,12 +8,6 @@ pipeline {
                 bat 'git clone https://github.com/Endorsmoch/PipelineJenkinsProject.git'
             }
         }
-
-        stage('Instalar dependencias') {
-            steps {
-                bat 'composer install'
-            }
-        }
         
         stage('Compilar proyecto') {
             steps {
