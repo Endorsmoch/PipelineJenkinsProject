@@ -22,7 +22,7 @@ pipeline {
         
         stage('Ejecutar test cases') {
             steps {
-                bat 'C:\wamp\bin\php\php8.2.0\php artisan test --filter AlumnosTest'
+                bat 'php artisan test'
             }
         }
 
