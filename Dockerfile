@@ -1,34 +1,42 @@
-FROM php:8-fpm
+FROM ubuntu:20.04
 
-# Arguments defined in docker-compose.yml
-ARG user
-ARG uid
+#Set environment variabe to avoid interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Install system dependencies
+#Install dependencies
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip
+    software-properties-common \
+    && add-apt-repository ppa:ondrej/php \
+    && apt-get update \
+    && apt-get install -y \
+    nginx \
+    php8.2-fpm \
+    php8.2-mysql \
+    php8.2-xml
 
-# Clear cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+#Copy Nginx configuration file
+COPY nginx.conf /etc/nginx/sites-enabled/
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+#Copy Laravel application 
+COPY . var/www/html
 
-# Get latest Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+#Change ownership of the application
+RUN chown -R www-data:www-data /var/www/html
 
-# Create system user to run Composer and Artisan Commands
-RUN useradd -G www-data,root -u $uid -d /home/$user $user
-RUN mkdir -p /home/$user/.composer && \
-    chown -R $user:$user /home/$user
+#Copy the .env.example file and rename it to .env
+COPY .env.example /var/www/html/.env
 
-# Set working directory
-WORKDIR /var/www
+#Generate application key
+RUN php /var/www/html/artisan key:generate --env=/var/www/html/.env
 
-USER $user
+#Clear cache
+RUN php /var/www/html/artisan config:cache
+
+#Remove default Nginx configuration file
+RUN rm /etc/nginx/sites-enabled/default
+
+#Expose port 80
+EXPOSE 80
+
+#Start Nginx and PHP-FPM services
+CMD service php8.2-fpm start && nginx -g "daemon off;"
