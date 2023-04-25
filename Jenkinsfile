@@ -4,6 +4,7 @@ pipeline {
     stages {
         stage('Clonar repositorio') {
             steps {
+                bat 'rm -rf PipelineJenkinsProject'
                 bat 'git clone https://github.com/Endorsmoch/PipelineJenkinsProject.git'
             }
         }
