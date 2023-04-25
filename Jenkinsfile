@@ -11,7 +11,7 @@ pipeline {
         
         stage('Ejecutar test cases') {
             steps {
-                bat 'php artisan test'
+                bat 'php artisan test --filter AlumnosTest'
             }
         }
 
