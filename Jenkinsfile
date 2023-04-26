@@ -23,7 +23,6 @@ pipeline {
         
         stage('Desplegar imagen Docker') {
             steps {
-                bat 'docker rm pipeline || true'
                 bat 'docker run -p 8080:80 --env-file env.list --name pipeline -d pipelinesicei'
             }
         }
