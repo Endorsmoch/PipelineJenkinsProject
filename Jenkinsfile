@@ -23,7 +23,7 @@ pipeline {
         
         stage('Desplegar imagen Docker') {
             steps {
-                bat 'docker run -p 8080:80 -e APP_ENV=local --name pipeline -d pipelinesicei'
+                bat 'docker run -p 8081:80 -e APP_ENV=local --name pipeline -d pipelinesicei'
             }
         }
     }
