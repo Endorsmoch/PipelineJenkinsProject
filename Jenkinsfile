@@ -23,9 +23,8 @@ pipeline {
         
         stage('Desplegar imagen Docker') {
             steps {
-                bat 'docker stop contenedor-pipelinesicei >nul 2>&1 || true'
-                bat 'docker rm contenedor-pipelineasicei || true'
-                bat 'docker run -p 8080:80 --env-file env.list --name contenedor-pipelinesicei -d pipelinesicei'
+                bat 'docker rm pipeline || true'
+                bat 'docker run -p 8080:80 --env-file env.list --name pipeline -d pipelinesicei'
             }
         }
     }
